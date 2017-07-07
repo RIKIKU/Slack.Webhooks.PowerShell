@@ -58,9 +58,12 @@ namespace Slack.Webhooks.PowerShell
             base.EndProcessing();
         }
     }
+    
+
     [Cmdlet(VerbsCommon.New, "SlackMessage", SupportsShouldProcess = false, SupportsTransactions = false)]
     public class CreateSlackMessage : PSCmdlet
     {
+        const string emojiValidation = "\"something\",\"somethingelse\"";
         [Parameter(
             Mandatory = false,
             Position = 0
@@ -83,6 +86,7 @@ namespace Slack.Webhooks.PowerShell
             Mandatory = false,
             Position = 2
             )]
+        [ValidateEnumeratedArguments()]
         public string IconEmoji
         {
             get;
@@ -139,7 +143,7 @@ namespace Slack.Webhooks.PowerShell
 
         protected override void ProcessRecord()
         {
-            WriteDebug("Instansiating SlackMessage")
+            WriteDebug("Instansiating SlackMessage");
             SlackMessage message = new SlackMessage
             {
                 Channel = Channel,
@@ -161,6 +165,12 @@ namespace Slack.Webhooks.PowerShell
                 WriteDebug("Attachments Found. Converting to list");
                 message.Attachments = new List<SlackAttachment> { Attachments };
             }
+            Type type = typeof(Emoji);
+            foreach (var p in type.GetProperties())
+            {
+                var v = p.GetValue(null, null);
+            }
+
             WriteDebug("Message Created Ouputting to pipeline");
             WriteObject(message);
         }
@@ -177,7 +187,7 @@ namespace Slack.Webhooks.PowerShell
             Mandatory = false,
             Position = 0
             )]
-        public string Channel
+        public string FallbackMessage
         {
             get;
             set;
@@ -186,7 +196,7 @@ namespace Slack.Webhooks.PowerShell
             Mandatory = false,
             Position = 1
             )]
-        public string Text
+        public string Title
         {
             get;
             set;
@@ -195,7 +205,7 @@ namespace Slack.Webhooks.PowerShell
             Mandatory = false,
             Position = 2
             )]
-        public string IconEmoji
+        public string Pretext
         {
             get;
             set;
@@ -204,42 +214,66 @@ namespace Slack.Webhooks.PowerShell
             Mandatory = false,
             Position = 3
             )]
-        public string Username
+        public string Text
         {
             get;
             set;
         }
-        [Parameter(Mandatory = false)]
-        public SwitchParameter LinkNames
-        {
-            get;
-            set;
-        }
-        [Parameter(Mandatory = false)]
-        public SwitchParameter NotMarkdown
-        {
-            get;
-            set;
-        }
-
         [Parameter(
             Mandatory = false,
-            HelpMessage = "https://api.slack.com/docs/message-formatting"
+            Position = 4
             )]
-        [ValidateSet("full", "none")]
-        public string ParseMode
+        public string TitleLink
         {
             get;
             set;
         }
         [Parameter(Mandatory = false)]
-        public string IconUrl
+        public string AuthorIconLink
         {
             get;
             set;
         }
         [Parameter(Mandatory = false)]
-        public SlackAttachment Attachments
+        public string AuthorLink
+        {
+            get;
+            set;
+        }
+        [Parameter(Mandatory = false)]
+        public string AuthorName
+        {
+            get;
+            set;
+        }
+        [Parameter(
+            Mandatory = false
+            )]
+        public string Color
+        {
+            get;
+            set;
+        }
+        [Parameter(Mandatory = false)]
+        public string ImageUrl
+        {
+            get;
+            set;
+        }
+        [Parameter(Mandatory = false)]
+        public string ThumbUrl
+        {
+            get;
+            set;
+        }
+        [Parameter(Mandatory = false)]
+        public PSObject[] Fields
+        {
+            get;
+            set;
+        }
+        [Parameter(Mandatory = false)]
+        public List<string> MrkdwnIn
         {
             get;
             set;
@@ -251,24 +285,84 @@ namespace Slack.Webhooks.PowerShell
 
         protected override void ProcessRecord()
         {
-            WriteDebug("Instansiating SlackMessage");
+            WriteDebug("Instansiating SlackAttachment object");
             SlackAttachment attachment = new SlackAttachment
             {
-                AuthorIcon = "",
-                AuthorLink = "",
-                AuthorName = "",
-                Color = "",
-                Fallback = "",
-                ImageUrl = "",
-                Pretext = "",
-                Text = "",
-                ThumbUrl = "",
-                Title = "",
-                TitleLink = ""
+                AuthorIcon = AuthorIconLink,
+                AuthorLink = AuthorLink,
+                AuthorName = AuthorName,
+                Color = Color,
+                Fallback = FallbackMessage,
+                ImageUrl = ImageUrl,
+                Pretext = Pretext,
+                Text = Text,
+                ThumbUrl = ThumbUrl,
+                Title = Title,
+                TitleLink = TitleLink
             };
-            //Fields
+
+            attachment.Fields = new List<SlackField>
+            {
+                
+            };
+            
+
             //MrkdwnIn
+            
+
             WriteObject(attachment);
+        }
+
+        protected override void EndProcessing()
+        {
+            base.EndProcessing();
+        }
+    }
+    [Cmdlet(VerbsCommon.New, "SlackField", SupportsShouldProcess = false, SupportsTransactions = false)]
+    public class CreateSlackField : PSCmdlet
+    {
+        [Parameter(
+            Mandatory = false,
+            Position = 0
+            )]
+        public string Title
+        {
+            get;
+            set;
+        }
+        [Parameter(
+            Mandatory = false,
+            Position = 1
+            )]
+        public string Value
+        {
+            get;
+            set;
+        }
+        [Parameter(
+            Mandatory = false,
+            Position = 2
+            )]
+        public SwitchParameter Short
+        {
+            get;
+            set;
+        }
+        protected override void BeginProcessing()
+        {
+        }
+
+        protected override void ProcessRecord()
+        {
+            WriteDebug("Instansiating SlackAttachment object");
+            SlackField Field = new SlackField
+            {
+                Short = Short.IsPresent,
+                Title = Title,
+                Value = Value
+            };
+
+            WriteObject(Field);
         }
 
         protected override void EndProcessing()
