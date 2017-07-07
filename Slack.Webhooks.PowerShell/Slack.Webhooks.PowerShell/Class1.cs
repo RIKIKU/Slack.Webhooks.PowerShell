@@ -86,7 +86,6 @@ namespace Slack.Webhooks.PowerShell
             Mandatory = false,
             Position = 2
             )]
-        [ValidateEnumeratedArguments()]
         public string IconEmoji
         {
             get;
