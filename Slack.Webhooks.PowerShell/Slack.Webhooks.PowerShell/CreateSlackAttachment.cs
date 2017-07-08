@@ -10,7 +10,7 @@ using System.Reflection;
 namespace Slack.Webhooks.PowerShell
 {
 
-    [Cmdlet(VerbsCommon.New, "SlackAttachment", SupportsShouldProcess = false, SupportsTransactions = false)]
+    [Cmdlet(VerbsCommon.New, "SlackAttachment", SupportsShouldProcess = false)]
     [OutputType(typeof(SlackAttachment))]
     public class CreateSlackAttachment : PSCmdlet
     {
@@ -98,7 +98,7 @@ namespace Slack.Webhooks.PowerShell
             set;
         }
         [Parameter(Mandatory = false)]
-        public PSObject[] Fields
+        public Array Fields
         {
             get;
             set;
@@ -129,13 +129,25 @@ namespace Slack.Webhooks.PowerShell
                 Text = Text,
                 ThumbUrl = ThumbUrl,
                 Title = Title,
-                TitleLink = TitleLink
+                TitleLink = TitleLink,
+                Fields = new List<SlackField>()
             };
-
-            attachment.Fields = new List<SlackField>
+            
+            
+            foreach (PSObject Field in Fields)
             {
+                if(Field.ImmediateBaseObject is Slack.Webhooks.SlackField)
+                {
+                    SlackField Thing = (SlackField)Field.BaseObject;
+                    attachment.Fields.Add(Thing);
+                }
+                
 
-            };
+                //attachment.Fields.Add(
+            }
+
+
+
 
 
             //MrkdwnIn
