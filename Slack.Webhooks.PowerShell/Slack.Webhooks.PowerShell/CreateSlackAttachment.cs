@@ -103,8 +103,9 @@ namespace Slack.Webhooks.PowerShell
             get;
             set;
         }
-        [Parameter(Mandatory = false)]
-        public List<string> MrkdwnIn
+        [Parameter(Mandatory = false,HelpMessage = "This so that you may specify which fields have markup in them.")]
+        [ValidateSet("pretext", "text", "fields")]
+        public PSObject[] MarkdownInParameters
         {
             get;
             set;
@@ -132,8 +133,16 @@ namespace Slack.Webhooks.PowerShell
                 TitleLink = TitleLink,
                 Fields = new List<SlackField>()
             };
-            
-            
+
+            foreach (PSObject MarkDownParameter in MarkdownInParameters)
+            {
+                if (MarkDownParameter.ImmediateBaseObject is string)
+                {
+                    string Thing = MarkDownParameter.BaseObject.ToString();
+                    attachment.MrkdwnIn.Add(Thing);
+                }
+            }
+
             foreach (PSObject Field in Fields)
             {
                 if(Field.ImmediateBaseObject is Slack.Webhooks.SlackField)
@@ -141,17 +150,7 @@ namespace Slack.Webhooks.PowerShell
                     SlackField Thing = (SlackField)Field.BaseObject;
                     attachment.Fields.Add(Thing);
                 }
-                
-
-                //attachment.Fields.Add(
             }
-
-
-
-
-
-            //MrkdwnIn
-
 
             WriteObject(attachment);
         }
