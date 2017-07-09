@@ -25,9 +25,9 @@ namespace Slack.Webhooks.PowerShell
             Mandatory = false,
             Position = 1
             )]
+        [ValidateNotNullOrEmpty()]
         public string Text { get; set; }
 
-        public string IconEmoji { get; set; }
         private static RuntimeDefinedParameterDictionary _staticStorage;
         //https://stackoverflow.com/questions/25823910/pscmdlet-dynamic-auto-complete-a-parameter-like-get-process
         //https://gist.github.com/dhcgn/2f0d4b4d1f08088c438e
@@ -38,13 +38,12 @@ namespace Slack.Webhooks.PowerShell
             var attrib = new Collection<Attribute>() { new ParameterAttribute(), new ValidateSetAttribute(emojinames.ToArray()) };
             var parameter = new RuntimeDefinedParameter("IconEmoji", typeof(String), attrib);
             runtimeDefinedParameterDictionary.Add("IconEmoji", parameter);
-            //_staticStorage = runtimeDefinedParameterDictionary;
+            _staticStorage = runtimeDefinedParameterDictionary;
             return runtimeDefinedParameterDictionary;
         }
-        
         [Parameter(
             Mandatory = false,
-            Position = 3
+            Position = 2
             )]
         public string Username { get; set; }
 
@@ -97,10 +96,15 @@ namespace Slack.Webhooks.PowerShell
                 WriteDebug("Attachments Found. Converting to list");
                 message.Attachments = new List<SlackAttachment> { Attachments };
             }
-
-            if (IconEmoji != string.Empty)
+            var IconEmojiRuntime = new RuntimeDefinedParameter();
+            _staticStorage.TryGetValue("IconEmoji", out IconEmojiRuntime);
+            
+            if (IconEmojiRuntime.IsSet)
             {
-                PropertyInfo emojiProperty = typeof(Emoji).GetProperty(IconEmoji);
+                WriteDebug("setting emoji property info");
+                
+                PropertyInfo emojiProperty = typeof(Emoji).GetProperty(IconEmojiRuntime.Value.ToString());
+                WriteDebug("Selecting Emoji");
                 message.IconEmoji = (string)emojiProperty.GetValue(null, null);
             }
             
