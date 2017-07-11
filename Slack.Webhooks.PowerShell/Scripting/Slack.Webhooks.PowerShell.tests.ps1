@@ -112,25 +112,23 @@ Describe "New-SlackAttachment" {
         }
         
         $Base = New-SlackAttachment @BaseParams
-        It "Should Return a Nested SlackField type" {
+        <#It "Should Return a Nested List<SlackField>" {
         $base.Fields[0] | Should BeOfType Slack.Webhooks.SlackField
-		}
-        It "Should Return a second Nested SlackField type" {
         $base.Fields[1] | Should BeOfType Slack.Webhooks.SlackField
-		}
-        It "Fields should be a list" {
-        $base.Fields | Should BeOfType System.Collections.Generic.List
-		}
-        <#
-		It "Should Return the correct Field Short Bool" {
-        $base.Fields[0].Value | Should BeExactly $fields.Value
-		}
-        It "Should Return the correct Field Short Bool" {
-        $base.Fields[1].Short | Should BeExactly $fields.Short
-		}
-        It "Should Return the correct Field Short Bool" {
-        $base.Fields[1].Title | Should BeExactly $fields.Title
 		}#>
-#need to test for the mrkdown list too. 
+        It "Should Return a Nested List<SlackField>" {
+        $base.Fields.GetType().UnderlyingSystemType.ToString() | Should be System.Collections.Generic.List``1[Slack.Webhooks.SlackField]
+		}
+        It "Should Return a Nested SlackField with correct strings" {
+        $base.Fields[0].Title | Should -Be $fields[0].Title
+        $base.Fields[1].Value | Should -Be $fields[1].Value
+		}
+        It "MrkdwnIn is a Nested List<string>" {
+        $base.MrkdwnIn.GetType().UnderlyingSystemType.ToString() | Should Be System.Collections.Generic.List``1[System.String]
+		}
+        It "Should Return the correct markdown in strings" {
+        $base.MrkdwnIn[0] | Should -BeExactly $BaseParams.MarkdownInParameter[0]
+        $base.MrkdwnIn[1] | Should -BeExactly $BaseParams.MarkdownInParameter[1]
+		}
     }
 }
