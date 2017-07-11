@@ -103,6 +103,7 @@ namespace Slack.Webhooks.PowerShell
             set;
         }
         [Parameter(Mandatory = false)]
+        [ValidateSet("pretext", "text", "fields")]
         public string[] MarkdownInParameters { get; set; }
         protected override void BeginProcessing()
         {
@@ -154,6 +155,7 @@ namespace Slack.Webhooks.PowerShell
             
             
             WriteObject(attachment);
+
         }
 
         protected override void EndProcessing()
