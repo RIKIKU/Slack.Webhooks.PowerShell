@@ -9,7 +9,6 @@ using System.Reflection;
 
 namespace Slack.Webhooks.PowerShell
 {
-
     [Cmdlet(VerbsCommon.New, "SlackAttachment", SupportsShouldProcess = false)]
     [OutputType(typeof(SlackAttachment))]
     public class CreateSlackAttachment : PSCmdlet
@@ -103,14 +102,8 @@ namespace Slack.Webhooks.PowerShell
             get;
             set;
         }
-        [Parameter(Mandatory = false,HelpMessage = "This so that you may specify which fields have markup in them.")]
-        [ValidateSet("pretext", "text", "fields")]
-        public PSObject[] MarkdownInParameters
-        {
-            get;
-            set;
-        }
-
+        [Parameter(Mandatory = false)]
+        public string[] MarkdownInParameters { get; set; }
         protected override void BeginProcessing()
         {
         }
@@ -131,27 +124,35 @@ namespace Slack.Webhooks.PowerShell
                 ThumbUrl = ThumbUrl,
                 Title = Title,
                 TitleLink = TitleLink,
-                Fields = new List<SlackField>()
+                Fields = new List<SlackField>(),
+                MrkdwnIn = new List<string>()
             };
 
-            foreach (PSObject MarkDownParameter in MarkdownInParameters)
+            if (MarkdownInParameters != null)
             {
-                if (MarkDownParameter.ImmediateBaseObject is string)
+                foreach (string MarkDownParameter in MarkdownInParameters)
                 {
-                    string Thing = MarkDownParameter.BaseObject.ToString();
-                    attachment.MrkdwnIn.Add(Thing);
+                    if (!string.IsNullOrEmpty(MarkDownParameter))
+                    {
+                        //string Thing = MarkDownParameter.BaseObject.ToString();
+                        attachment.MrkdwnIn.Add(MarkDownParameter);
+                    }
                 }
             }
-
-            foreach (PSObject Field in Fields)
+            
+           if(Fields != null)
             {
-                if(Field.ImmediateBaseObject is Slack.Webhooks.SlackField)
+                foreach (PSObject Field in Fields)
                 {
-                    SlackField Thing = (SlackField)Field.BaseObject;
-                    attachment.Fields.Add(Thing);
+                    if (Field.ImmediateBaseObject is Slack.Webhooks.SlackField)
+                    {
+                        SlackField Thing = (SlackField)Field.BaseObject;
+                        attachment.Fields.Add(Thing);
+                    }
                 }
             }
-
+            
+            
             WriteObject(attachment);
         }
 
