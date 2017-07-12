@@ -80,7 +80,8 @@ namespace Slack.Webhooks.PowerShell
                 Channel = Channel,
                 Text = Text,
                 Username = Username,
-                Parse = ParseMode
+                Parse = ParseMode,
+                Attachments = new List<SlackAttachment>()
             };
 
             if (!string.IsNullOrEmpty(IconUrl))
@@ -94,7 +95,7 @@ namespace Slack.Webhooks.PowerShell
             if (Attachments != null)
             {
                 WriteDebug("Attachments Found. Converting to list");
-                message.Attachments = new List<SlackAttachment> { Attachments };
+                message.Attachments.Add(Attachments);
             }
             var IconEmojiRuntime = new RuntimeDefinedParameter();
             _staticStorage.TryGetValue("IconEmoji", out IconEmojiRuntime);
