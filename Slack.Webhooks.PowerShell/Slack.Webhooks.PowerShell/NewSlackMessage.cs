@@ -64,7 +64,7 @@ namespace Slack.Webhooks.PowerShell
         public string IconUrl {get; set;}
 
         [Parameter(Mandatory = false)]
-        public SlackAttachment Attachments {get; set;}
+        public Array Attachments {get; set;}
         
 
 
@@ -95,7 +95,14 @@ namespace Slack.Webhooks.PowerShell
             if (Attachments != null)
             {
                 WriteDebug("Attachments Found. Converting to list");
-                message.Attachments.Add(Attachments);
+                foreach (PSObject Attachment in Attachments)
+                {
+                    if (Attachment.ImmediateBaseObject is Slack.Webhooks.SlackAttachment)
+                    {
+                        SlackAttachment Thing = (SlackAttachment)Attachment.BaseObject;
+                        message.Attachments.Add(Thing);
+                    }
+                }
             }
             var IconEmojiRuntime = new RuntimeDefinedParameter();
             _staticStorage.TryGetValue("IconEmoji", out IconEmojiRuntime);
@@ -113,7 +120,6 @@ namespace Slack.Webhooks.PowerShell
             WriteDebug("Message Created Ouputting to pipeline");
             WriteObject(message);
         }
-        //https://stackoverflow.com/questions/33132028/powershell-binary-module-dynamic-tab-completion-for-cmdlet-parameter-values
 
         protected override void EndProcessing()
         {

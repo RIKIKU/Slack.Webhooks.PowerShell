@@ -143,26 +143,31 @@ Describe "New-SlackMessage" {
 		{ 
 			$fields += New-SlackField -Title "SlackField Title" -Value "SlackField Value$($i)" -Short
 		}
-		$AttachmentParams = @{
-            FallbackMessage = "This is a Fallback Message" 
-            Title = "This is a Title" 
-            Pretext = "This is some Pretext" 
-            Text = "Message Text" 
-            TitleLink = "http://titleLink.com.au"
-            AuthorIconLink = "https://AuthorIconLink.com.au/somesub" 
-            AuthorLink = "https://AuthorLink.com.au/someOtherSub/profile" 
-            AuthorName = "The Author's Name"
-            Color = "#d6f218"
-            ImageUrl = "https://ImageUrl.com/something/jdgdfg"
-            ThumbUrl ="https://ThumbURL.com/my/Thumb"
-            Fields = $fields
-            MarkdownInParameter = "pretext","text"
-        }
+		
+        $Attachment = @()
+		for ($i = 0; $i -lt 2; $i++)
+		{ 
+            $AttachmentParams = @{
+                FallbackMessage = "This is a Fallback Message" 
+                Title = "This is an Attachment Title $($i)" 
+                Pretext = "This is an Attachment Pretext" 
+                Text = "Attachment Text" 
+                TitleLink = "http://titleLink.com.au"
+                AuthorIconLink = "https://AuthorIconLink.com.au/somesub" 
+                AuthorLink = "https://AuthorLink.com.au/someOtherSub/profile" 
+                AuthorName = "The Author's Name"
+                Color = "#d6f218"
+                ImageUrl = "https://ImageUrl.com/something/jdgdfg"
+                ThumbUrl ="https://ThumbURL.com/my/Thumb"
+                Fields = $fields
+                MarkdownInParameter = "pretext","text"
+            }
         
-        $Attachment = New-SlackAttachment @AttachmentParams
+            $Attachment += New-SlackAttachment @AttachmentParams
+        }
 		$MessageParams = @{
         Channel = "#general"
-        Text = "MessageText"
+        Text = "Message Text"
         Username = "Username Text"
         LinkNames = $true
         NotMarkdown = $false
@@ -212,6 +217,7 @@ Describe "New-SlackMessage" {
             $message.Atttachments[0].MrkdwnIn[0] | Should -BeExactly $AttachmentParams.MarkdownInParameter[0]
             $message.Atttachments[0].MrkdwnIn[1] | Should -BeExactly $AttachmentParams.MarkdownInParameter[1]
 		}
-
+        
+        Send-SlackMessage -URI "https://hooks.slack.com/services/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" -Message $message
 	}
 }
