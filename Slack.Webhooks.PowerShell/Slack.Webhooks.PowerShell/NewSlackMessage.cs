@@ -95,10 +95,7 @@ namespace Slack.Webhooks.PowerShell
             if (Attachments != null)
             {
                 WriteDebug("Attachments Found. Converting to list");
-                foreach (SlackAttachment Attachment in Attachments)
-                {
-                        message.Attachments.Add(Attachment);
-                }
+                message.Attachments = new List<SlackAttachment>(Attachments);
             }
             var IconEmojiRuntime = new RuntimeDefinedParameter();
             _staticStorage.TryGetValue("IconEmoji", out IconEmojiRuntime);

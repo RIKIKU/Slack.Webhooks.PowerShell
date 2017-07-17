@@ -131,24 +131,12 @@ namespace Slack.Webhooks.PowerShell
 
             if (MarkdownInParameters != null)
             {
-                foreach (string MarkDownParameter in MarkdownInParameters)
-                {
-                    if (!string.IsNullOrEmpty(MarkDownParameter))
-                    {
-                        //string Thing = MarkDownParameter.BaseObject.ToString();
-                        attachment.MrkdwnIn.Add(MarkDownParameter);
-                    }
-                }
-            }
+                attachment.MrkdwnIn = new List<string>(MarkdownInParameters);
+            } 
             
            if(Fields != null)
             {
-
                 attachment.Fields = new List<SlackField>(Fields);
-                /*foreach (SlackField Field in Fields)
-                {
-                        attachment.Fields.Add(Field);
-                }*/
             }
             
             

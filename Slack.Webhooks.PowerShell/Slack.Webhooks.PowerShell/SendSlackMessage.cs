@@ -10,6 +10,7 @@ using System.Reflection;
 namespace Slack.Webhooks.PowerShell
 {
     [Cmdlet(VerbsCommunications.Send,"SlackMessage",SupportsShouldProcess = false)]
+    [OutputType(typeof(bool))]
     public class SendSlackMessage : PSCmdlet
     {
         [Parameter(
@@ -68,7 +69,6 @@ namespace Slack.Webhooks.PowerShell
             }
             else
             {
-                
                 var output = slackClient.Post(Message);
                 WriteObject(output);
             }
