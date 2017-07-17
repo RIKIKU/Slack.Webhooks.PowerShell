@@ -39,18 +39,39 @@ namespace Slack.Webhooks.PowerShell
             get;
             set;
         }
-        SlackClient slackClient;
+        [Parameter(Mandatory = false)]
+        public string[] PostToChannels
+        {
+            get;
+            set;
+        }
+        
         protected override void BeginProcessing()
         {
-            if (TimeOut.Equals(0)) { slackClient = new SlackClient(URI); }
-            else {slackClient = new SlackClient(URI, TimeOut); }
-            
+            base.BeginProcessing();
         }
 
         protected override void ProcessRecord()
         {
+
+            SlackClient slackClient;
+            if (TimeOut.Equals(0)) { slackClient = new SlackClient(URI); }
+            else { slackClient = new SlackClient(URI, TimeOut); }
             WriteDebug(string.Format("Sending Message to {0}", URI));
-            slackClient.Post(Message);
+            if (PostToChannels != null)
+            {
+
+                IEnumerable<string> EnumiratorChan = PostToChannels;
+                var output = slackClient.PostToChannels(Message, PostToChannels);
+                WriteObject(output);
+
+            }
+            else
+            {
+                
+                var output = slackClient.Post(Message);
+                WriteObject(output);
+            }
         }
 
         protected override void EndProcessing()

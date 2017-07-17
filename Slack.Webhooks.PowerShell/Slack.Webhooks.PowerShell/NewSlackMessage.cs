@@ -64,7 +64,7 @@ namespace Slack.Webhooks.PowerShell
         public string IconUrl {get; set;}
 
         [Parameter(Mandatory = false)]
-        public Array Attachments {get; set;}
+        public SlackAttachment[] Attachments {get; set;}
         
 
 
@@ -95,13 +95,9 @@ namespace Slack.Webhooks.PowerShell
             if (Attachments != null)
             {
                 WriteDebug("Attachments Found. Converting to list");
-                foreach (PSObject Attachment in Attachments)
+                foreach (SlackAttachment Attachment in Attachments)
                 {
-                    if (Attachment.ImmediateBaseObject is Slack.Webhooks.SlackAttachment)
-                    {
-                        SlackAttachment Thing = (SlackAttachment)Attachment.BaseObject;
-                        message.Attachments.Add(Thing);
-                    }
+                        message.Attachments.Add(Attachment);
                 }
             }
             var IconEmojiRuntime = new RuntimeDefinedParameter();

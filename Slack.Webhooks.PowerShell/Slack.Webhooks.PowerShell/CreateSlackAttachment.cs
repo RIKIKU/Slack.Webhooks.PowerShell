@@ -97,7 +97,7 @@ namespace Slack.Webhooks.PowerShell
             set;
         }
         [Parameter(Mandatory = false)]
-        public Array Fields
+        public SlackField[] Fields
         {
             get;
             set;
@@ -143,14 +143,12 @@ namespace Slack.Webhooks.PowerShell
             
            if(Fields != null)
             {
-                foreach (PSObject Field in Fields)
+
+                attachment.Fields = new List<SlackField>(Fields);
+                /*foreach (SlackField Field in Fields)
                 {
-                    if (Field.ImmediateBaseObject is Slack.Webhooks.SlackField)
-                    {
-                        SlackField Thing = (SlackField)Field.BaseObject;
-                        attachment.Fields.Add(Thing);
-                    }
-                }
+                        attachment.Fields.Add(Field);
+                }*/
             }
             
             

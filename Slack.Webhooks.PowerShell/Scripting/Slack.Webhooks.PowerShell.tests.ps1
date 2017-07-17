@@ -290,7 +290,7 @@ Describe "New-SlackMessage" {
 		}
  
         
-        #Send-SlackMessage -URI "https://hooks.slack.com/services/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" -Message $message
+        Send-SlackMessage -URI "https://hooks.slack.com/services/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" -Message $message
 	}
 
 }
