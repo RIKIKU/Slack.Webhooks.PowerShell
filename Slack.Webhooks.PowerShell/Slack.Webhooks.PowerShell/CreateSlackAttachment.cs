@@ -9,14 +9,14 @@ using System.Reflection;
 
 namespace Slack.Webhooks.PowerShell
 {
-    [Cmdlet(VerbsCommon.New, "SlackAttachment", SupportsShouldProcess = false,DefaultParameterSetName = "None")]
+    [Cmdlet(VerbsCommon.New, "SlackAttachment", SupportsShouldProcess = false,DefaultParameterSetName = "None",ConfirmImpact = ConfirmImpact.None)]
     [OutputType(typeof(SlackAttachment))]
     public class CreateSlackAttachment : PSCmdlet
     {
         [Parameter(
             Mandatory = false,
             Position = 0,
-            HelpMessage = "A plain-text summary of the attachment. This text will be used in clients that don't show formatted text (eg. IRC, mobile notifications) and should not contain any markup."
+            HelpMessage = "A plain-text summary of the attachment.\nThis text will be used in clients that don't show formatted text (eg. IRC, mobile notifications) and should not contain any markup."
             )]
         public string FallbackMessage
         {
@@ -26,7 +26,7 @@ namespace Slack.Webhooks.PowerShell
         [Parameter(
             Mandatory = false,
             Position = 1,
-            HelpMessage = "The title is displayed as larger, bold text near the top of a message attachment. By passing a valid URL in the title_link parameter (optional), the title text will be hyperlinked.",
+            HelpMessage = "The title is displayed as larger, bold text near the top of a message attachment.\nBy passing a valid URL in the TitleLink parameter (optional), the title text will be hyperlinked.",
             ParameterSetName = "Title"
             )]
         public string Title
@@ -47,7 +47,7 @@ namespace Slack.Webhooks.PowerShell
         [Parameter(
             Mandatory = false,
             Position = 3,
-            HelpMessage = "This is the main text in a message attachment, and can contain standard message markup. Links posted in the text field will not unfurl."
+            HelpMessage = "This is the main text in a message attachment, and can contain standard message markup.\nLinks posted in the text field will not unfurl."
             )]
         public string Text
         {
@@ -57,7 +57,7 @@ namespace Slack.Webhooks.PowerShell
         [Parameter(
             Mandatory = false,
             Position = 4,
-            HelpMessage = "The title is displayed as larger, bold text near the top of a message attachment. By passing a valid URL in the title_link parameter (optional), the title text will be hyperlinked.",
+            HelpMessage = "The URL for the Title text to point to",
             ParameterSetName = "Title"
             )]
         public string TitleLink
@@ -67,7 +67,7 @@ namespace Slack.Webhooks.PowerShell
         }
         [Parameter(
             Mandatory = false,
-            HelpMessage = "A valid URL that displays a small 16x16px image to the left of the AuthorName text. Will only work if AuthorName is present."
+            HelpMessage = "A valid URL that displays a small 16x16px image to the left of the AuthorName text.\nWill only work if AuthorName is present."
             )]
         public string AuthorIconLink
         {
@@ -76,7 +76,7 @@ namespace Slack.Webhooks.PowerShell
         }
         [Parameter(
             Mandatory = false,
-            HelpMessage = "A valid URL that will hyperlink the author_name text mentioned above. Will only work if author_name is present"
+            HelpMessage = "A valid URL that will hyperlink the AuthorName text.\nWill only work if AuthorName is present"
             )]
         public string AuthorLink
         {
@@ -94,7 +94,7 @@ namespace Slack.Webhooks.PowerShell
         }
         [Parameter(
             Mandatory = false,
-            HelpMessage = "An optional value that can either be one of good, warning, danger, or any hex color code (eg. #439FE0). This value is used to color the border along the left side of the message attachment."
+            HelpMessage = "An optional value that can either be one of good, warning, danger, or any hex color code (eg. #439FE0).\nThis value is used to color the border along the left side of the message attachment."
             )]
         public string Color
         {
@@ -103,7 +103,7 @@ namespace Slack.Webhooks.PowerShell
         }
         [Parameter(
             Mandatory = false,
-            HelpMessage = "A valid URL to an image file that will be displayed inside a message attachment. The following formats are supported: GIF, JPEG, PNG, and BMP."
+            HelpMessage = "A valid URL to an image file that will be displayed inside a message attachment.\nThe following formats are supported: GIF, JPEG, PNG, and BMP."
             )]
         public string ImageUrl
         {
@@ -126,7 +126,10 @@ namespace Slack.Webhooks.PowerShell
             get;
             set;
         }
-        [Parameter(Mandatory = false)]
+        [Parameter(
+            Mandatory = false,
+            HelpMessage = "By default attachment text is not processed as markdown.\nTo enable markdown processing on a parameter, specify its name here.\nusing 'fields' here enables processing for both the 'Pretext' and 'Text' parameters."
+            )]
         [ValidateSet("pretext", "text", "fields")]
         public string[] MarkdownInParameters { get; set; }
         protected override void BeginProcessing()

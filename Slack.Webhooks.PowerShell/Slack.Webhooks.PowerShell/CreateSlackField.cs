@@ -9,7 +9,8 @@ namespace Slack.Webhooks.PowerShell
     {
         [Parameter(
             Mandatory = false,
-            Position = 0
+            Position = 0,
+            HelpMessage = "Shown as a bold heading above the value text. It cannot contain markup and will be escaped for you."
             )]
         public string Title
         {
@@ -18,7 +19,8 @@ namespace Slack.Webhooks.PowerShell
         }
         [Parameter(
             Mandatory = false,
-            Position = 1
+            Position = 1,
+            HelpMessage = "The text value of the field. It may contain standard message markup and must be escaped as normal. May be multi-line."
             )]
         public string Value
         {
@@ -27,7 +29,8 @@ namespace Slack.Webhooks.PowerShell
         }
         [Parameter(
             Mandatory = false,
-            Position = 2
+            Position = 2,
+            HelpMessage = "An optional flag indicating whether the value is short enough to be displayed side-by-side with other values."
             )]
         public SwitchParameter Short
         {

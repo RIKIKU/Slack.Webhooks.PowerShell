@@ -170,7 +170,7 @@ Describe "New-SlackMessage" {
         Text = "Message Text"
         Username = "Username Text"
         LinkNames = $true
-        NotMarkdown = $false
+        NoMarkdown = $false
         ParseMode = "full"
         IconUrl = "https://iconurl.com/test"
         Attachments = $Attachment
@@ -242,10 +242,10 @@ Describe "New-SlackMessage" {
         $Attachment = New-SlackAttachment @AttachmentParams
         $MessageParams = @{
         Channel = "#general"
-        Text = "Message Text"
+        Text = "@everyone Message Text #random"
         Username = "Username Text"
         LinkNames = $true
-        NotMarkdown = $false
+        NoMarkdown = $false
         ParseMode = "full"
         IconUrl = "https://iconurl.com/test"
         Attachments = $Attachment
