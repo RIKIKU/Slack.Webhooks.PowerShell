@@ -32,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Slack.Webhooks.PowerShell\Slack.Webhooks.PowerShell.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -62,8 +63,8 @@
   <ItemGroup>
     <Compile Include="CreateSlackField.cs" />
     <Compile Include="CreateSlackAttachment.cs" />
+    <Compile Include="CreateSlackMessage.cs" />
     <Compile Include="SendSlackMessage.cs" />
-    <Compile Include="NewSlackMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

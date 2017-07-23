@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Management.Automation;
-using System.Management.Automation.Language;
-using Slack.Webhooks;
 using System.Reflection;
 using System.Collections.ObjectModel;
 
@@ -19,13 +15,11 @@ namespace Slack.Webhooks.PowerShell
     /// <para type="link" uri="(https://api.slack.com/docs/message-formatting)">[Slack Message Formatting]</para>
     /// </summary>
     /// <example>
-    ///     <code>$message = New-SlackMessage -Text "Something has happened and I'm sending a message about it" -Username "Mr Magoo" </code>
-    ///     <code>Send-SlackMessage -URI "https://hooks.slack.com/services/T63QJj9PJ/B63335SU9/BaCnMZ1Gf27CPM2gYWPuptHk" -Message $message </code>
+    ///     <code>$message = New-SlackMessage -Text "Something has happened and I'm sending a message about it" -Username "Mr Magoo"&#xA;Send-SlackMessage -URI "https://hooks.slack.com/services/T63QJj9PJ/B63335SU9/BaCnMZ1Gf27CPM2gYWPuptHk" -Message $message </code>
     ///     <para>In this example I am sending a simple, plain text message.</para>
     /// </example>
     /// <example>
-    ///     <code>$message = New-SlackMessage -Text "&lt;!everyone&gt; some kind of thing has happened and I'm sending a message about it" -Username "Mr Magoo"  -NoMarkdown </code>
-    ///     <code>Send-SlackMessage -URI "https://hooks.slack.com/services/T63QJj9PJ/B63335SU9/BaCnMZ1Gf27CPM2gYWPuptHk" -Message $message </code>
+    ///     <code>$message = New-SlackMessage -Text "&lt;!everyone&gt; some kind of thing has happened and I'm sending a message about it" -Username "Mr Magoo"  -NoMarkdown&#xA;Send-SlackMessage -URI "https://hooks.slack.com/services/T63QJj9PJ/B63335SU9/BaCnMZ1Gf27CPM2gYWPuptHk" -Message $message </code>
     ///     <para>In this example I am sending a simple, plain text message.</para>
     /// </example>
     [Cmdlet(VerbsCommon.New, "SlackMessage", SupportsShouldProcess = true, SupportsTransactions = false)]
