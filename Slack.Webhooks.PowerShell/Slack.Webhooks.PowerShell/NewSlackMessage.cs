@@ -18,6 +18,16 @@ namespace Slack.Webhooks.PowerShell
     /// <para type="description">Only a SlackMessage can be sent to the webhook, however you may put an array of attachments into a SlackMessage.</para>
     /// <para type="link" uri="(https://api.slack.com/docs/message-formatting)">[Slack Message Formatting]</para>
     /// </summary>
+    /// <example>
+    ///     <code>$message = New-SlackMessage -Text "Something has happened and I'm sending a message about it" -Username "Mr Magoo" </code>
+    ///     <code>Send-SlackMessage -URI "https://hooks.slack.com/services/T63QJj9PJ/B63335SU9/BaCnMZ1Gf27CPM2gYWPuptHk" -Message $message </code>
+    ///     <para>In this example I am sending a simple, plain text message.</para>
+    /// </example>
+    /// <example>
+    ///     <code>$message = New-SlackMessage -Text "&lt;!everyone&gt; some kind of thing has happened and I'm sending a message about it" -Username "Mr Magoo"  -NoMarkdown </code>
+    ///     <code>Send-SlackMessage -URI "https://hooks.slack.com/services/T63QJj9PJ/B63335SU9/BaCnMZ1Gf27CPM2gYWPuptHk" -Message $message </code>
+    ///     <para>In this example I am sending a simple, plain text message.</para>
+    /// </example>
     [Cmdlet(VerbsCommon.New, "SlackMessage", SupportsShouldProcess = true, SupportsTransactions = false)]
     [OutputType(typeof(SlackMessage))]
     public class CreateSlackMessage : PSCmdlet, IDynamicParameters
@@ -71,9 +81,10 @@ namespace Slack.Webhooks.PowerShell
         public string Username { get; set; }
 
         /// <summary>
-        /// <para type="description">By default, Slack will not linkify channel names (starting with a '#') and usernames (starting with an '@')</para>
-        /// <para type="description">Include this switch to enable this behaviour.</para>
-        /// <para type="description">If you've set Parse to 'full' then this is enabled already enabled.</para>
+        /// <para type="description">By default, Slack will not linkify channel names (starting with a '#') and usernames (starting with an '@').
+        /// Include this switch to enable this behaviour.
+        /// If you've set Parse to 'full' then this is enabled already enabled.
+        /// </para>
         /// </summary>
         [Parameter(Mandatory = false,
                     HelpMessage = "By default, Slack will not linkify channel names (starting with a '#') and usernames (starting with an '@')\nInclude this switch to enable this behaviour.\nIf you've set Parse to 'full' then this is enabled already enabled.")]
@@ -86,9 +97,10 @@ namespace Slack.Webhooks.PowerShell
             HelpMessage = "Turn off Markdown processing on the message")]
         public SwitchParameter NoMarkdown {get;set;}
         /// <summary>
-        /// <para type="description">If you don't want Slack to perform any processing on your message, pass an argument of none</para>
-        /// <para type="description">If you want Slack to treat your message as completely unformatted, use "full".</para>
-        /// <para type="description">This will ignore any markup formatting you added to your message.</para>
+        /// <para type="description">If you don't want Slack to perform any processing on your message, pass an argument of none
+        /// If you want Slack to treat your message as completely unformatted, use "full".
+        /// This will ignore any markup formatting you added to your message.
+        /// </para>
         /// </summary>
         [Parameter(
             Mandatory = false,
@@ -97,16 +109,18 @@ namespace Slack.Webhooks.PowerShell
         [ValidateSet("full", "none")]
         public string ParseMode {get; set;}
         /// <summary>
-        /// <para type="description">A URL to a small image that will become the avatar for the message.</para>
-        /// <para type="description">IconEmoji takes precedence over this</para>
+        /// <para type="description">A URL to a small image that will become the avatar for the message.
+        /// IconEmoji takes precedence over this.
+        /// </para>
         /// </summary>
         [Parameter(Mandatory = false,
             HelpMessage = "A URL to a small image that will become the avatar for the message.\nIconEmoji takes precedence over this"
             )]
         public string IconUrl {get; set;}
         /// <summary>
-        /// <para type="description">An attachment or array of attachments to add to the message.</para>
-        /// <para type="description">Note this is not a file attachment.</para>
+        /// <para type="description">An attachment or array of attachments to add to the message.
+        /// Note this is not a file attachment.
+        /// </para>
         /// </summary>
         [Parameter(Mandatory = false,
                     HelpMessage = "An attachment or array of attachments to add to the message.\nNote this is not a file attachment.")]
@@ -185,6 +199,5 @@ namespace Slack.Webhooks.PowerShell
         {
             base.EndProcessing();
         }
-
     }
 }

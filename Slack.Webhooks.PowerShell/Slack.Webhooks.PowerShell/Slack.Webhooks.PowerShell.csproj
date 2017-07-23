@@ -71,9 +71,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>Copy $(SolutionDir)Scripting\Slack.Webhooks.PowerShell.tests.ps1 $(ProjectDir)bin\$(ConfigurationName)\ /Y
-
-Copy $(SolutionDir)Scripting\Slack.Webhooks.Powershell.psd1 $(ProjectDir)$(OutDir) /Y</PostBuildEvent>
+    <PostBuildEvent>Start Powershell -File $(SolutionDir)Build.ps1 -solutionDirectory $(SolutionDir) -projectDirectory $(ProjectDir) -OutDir $(OutDir) -configurationName $(ConfigurationName) -targetPath $(TargetPath)</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\XmlDoc2CmdletDoc.0.2.7\build\XmlDoc2CmdletDoc.targets" Condition="Exists('..\packages\XmlDoc2CmdletDoc.0.2.7\build\XmlDoc2CmdletDoc.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
