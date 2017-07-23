@@ -6,6 +6,7 @@
 
 set-location $PSScriptRoot
 Set-Location ..
+
 Import-Module "$((Get-Location).ToString())\Slack.Webhooks.PowerShell\bin\Debug\Slack.Webhooks.PowerShell"
 #Import-Module $PSScriptRoot\Slack.Webhooks.PowerShell
 Get-Command -Module Slack.Webhooks.PowerShell
