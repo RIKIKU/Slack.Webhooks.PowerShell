@@ -18,7 +18,8 @@ namespace Slack.Webhooks.PowerShell
         }
         [Parameter(
             Mandatory = true,
-            Position = 1
+            Position = 1,
+            ValueFromPipeline = true
             )]
         public SlackMessage Message
         {

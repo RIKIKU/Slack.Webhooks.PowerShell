@@ -114,6 +114,7 @@ namespace Slack.Webhooks.PowerShell
             set;
         }
         [Parameter(Mandatory = false,
+            ValueFromPipeline = true,
             HelpMessage = "Fields are a bit like a small spreadsheet you can add to your attachment. See New-SlackField for more info.")]
         public SlackField[] Fields
         {

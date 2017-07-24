@@ -117,6 +117,7 @@ namespace Slack.Webhooks.PowerShell
         /// </para>
         /// </summary>
         [Parameter(Mandatory = false,
+                    ValueFromPipeline = true,
                     HelpMessage = "An attachment or array of attachments to add to the message.\nNote this is not a file attachment.")]
         public SlackAttachment[] Attachments {get; set;}
         /// <summary>
