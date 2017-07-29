@@ -9,7 +9,7 @@ Set-Location ..
 
 Import-Module "$((Get-Location).ToString())\Slack.Webhooks.PowerShell\bin\Debug\Slack.Webhooks.PowerShell"
 #Import-Module $PSScriptRoot\Slack.Webhooks.PowerShell
-Get-Command -Module Slack.Webhooks.PowerShell
+$hook = "https://hooks.slack.com/services/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"
 Describe "New-SlackField" {
 	Context "Function Exists" {
 		It "Should be a SlackField"{
@@ -219,7 +219,7 @@ Describe "New-SlackMessage" {
             $message.Attachments[0].MrkdwnIn[1] | Should -BeExactly $AttachmentParams.MarkdownInParameter[1]
 		}
         
-        Send-SlackMessage -URI "https://hooks.slack.com/services/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" -Message $message
+        Send-SlackMessage -URI $hook -Message $message
 	}
     Context "Should create a fully detailed message without using arrays"{
 			$fields = New-SlackField -Title "SlackField Title" -Value "SlackField Value" -Short
@@ -291,7 +291,7 @@ Describe "New-SlackMessage" {
 		}
  
         
-        it "Should return True" { Send-SlackMessage -URI "https://hooks.slack.com/services/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" -Message $message | should be $true}
+        it "Should return True" { Send-SlackMessage -URI $hook -Message $message | should be $true}
 	}
 
 }

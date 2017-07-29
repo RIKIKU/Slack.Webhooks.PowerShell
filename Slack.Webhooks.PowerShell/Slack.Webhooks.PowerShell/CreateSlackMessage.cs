@@ -48,8 +48,11 @@ namespace Slack.Webhooks.PowerShell
         public string Text { get; set; }
 
         private static RuntimeDefinedParameterDictionary _staticStorage;
-        //https://stackoverflow.com/questions/25823910/pscmdlet-dynamic-auto-complete-a-parameter-like-get-process
-        //https://gist.github.com/dhcgn/2f0d4b4d1f08088c438e
+        //https://msdn.microsoft.com/en-us/library/bb336630(v=vs.110).aspx
+        /// <summary>
+        /// <para type="description">A Slack Emoji to use as the avatar</para>
+        /// </summary>
+        /// <returns></returns>
         public object GetDynamicParameters()
         {
             IEnumerable<string> emojinames = typeof(Emoji).GetProperties().Select(x => x.Name);

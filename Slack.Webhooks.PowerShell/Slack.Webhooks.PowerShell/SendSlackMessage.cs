@@ -3,10 +3,21 @@ using System.Management.Automation;
 
 namespace Slack.Webhooks.PowerShell
 {
+    /// <summary>
+    /// <para type="synopsis">Send a Slack Messge to a Webhook</para>
+    /// <para type="description">After you have created a SlackMessage you can send it to a webhook using this cmdlet.</para>
+    /// </summary>
+    /// <example>
+    ///     <code>$message = New-SlackMessage -Text "Something has happened and I'm sending a message about it" -Username "Mr Magoo"&#xA;Send-SlackMessage -URI "https://hooks.slack.com/services/T63QJj9PJ/B63335SU9/BaCnMZ1Gf27CPM2gYWPuptHk" -Message $message </code>
+    ///     <para>In this example I am sending a simple, plain text message.</para>
+    /// </example>
     [Cmdlet(VerbsCommunications.Send,"SlackMessage",SupportsShouldProcess = false)]
     [OutputType(typeof(bool))]
     public class SendSlackMessage : PSCmdlet
     {
+        /// <summary>
+        /// <para type="description">A valid Slack Webhook URI</para>
+        /// </summary>
         [Parameter(
             Mandatory = true,
             Position = 0
@@ -16,6 +27,9 @@ namespace Slack.Webhooks.PowerShell
             get;
             set;
         }
+        /// <summary>
+        /// <para type="description">The SlackMessage you want to send to slack.</para>
+        /// </summary>
         [Parameter(
             Mandatory = true,
             Position = 1,
@@ -26,6 +40,9 @@ namespace Slack.Webhooks.PowerShell
             get;
             set;
         }
+        /// <summary>
+        /// <para type="description">If you need a longer timeout, it can be set here.</para>
+        /// </summary>
         [Parameter(
             Mandatory = false,
             Position = 2
@@ -35,6 +52,9 @@ namespace Slack.Webhooks.PowerShell
             get;
             set;
         }
+        /// <summary>
+        /// <para type="description">Send the message to multiple channels at once.</para>
+        /// </summary>
         [Parameter(Mandatory = false)]
         public string[] PostToChannels
         {
