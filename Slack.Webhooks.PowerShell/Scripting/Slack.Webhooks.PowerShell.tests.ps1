@@ -7,8 +7,8 @@
 set-location $PSScriptRoot
 Set-Location ..
 
-Import-Module "$((Get-Location).ToString())\Slack.Webhooks.PowerShell\bin\Debug\Slack.Webhooks.PowerShell"
-#Import-Module $PSScriptRoot\Slack.Webhooks.PowerShell
+try{Import-Module "$((Get-Location).ToString())\Slack.Webhooks.PowerShell\bin\Debug\Slack.Webhooks.PowerShell" -ErrorAction Stop}
+catch{Import-Module $PSScriptRoot\Slack.Webhooks.PowerShell}
 $hook = "https://hooks.slack.com/services/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"
 Describe "New-SlackField" {
 	Context "Function Exists" {
